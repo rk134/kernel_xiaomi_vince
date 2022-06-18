@@ -7,7 +7,7 @@ export CONFIG="vince-perf_defconfig"
 export TC_PATH="$HOME/toolchains"
 export ZIP_DIR="$(pwd)/AnyKernel3"
 export KERNEL_DIR="$(pwd)"
-export CLANG_COMPILE="none"
+export CLANG_COMPILE="proton"
 export KBUILD_BUILD_USER="rk134"
 export VERSION="1"
 
