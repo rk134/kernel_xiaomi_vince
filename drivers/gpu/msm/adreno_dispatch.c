@@ -646,6 +646,11 @@ static int sendcmd(struct adreno_device *adreno_dev,
 		return ret;
 	}
 
+	mutex_unlock(&device->mutex);
+
+	dispatch_q->cmd_q[dispatch_q->tail] = cmdobj;
+	dispatch_q->tail = (dispatch_q->tail + 1) %
+		ADRENO_DISPATCH_DRAWQUEUE_SIZE;
 
 	/*
 	 * For the first submission in any given command queue update the
@@ -657,16 +662,6 @@ static int sendcmd(struct adreno_device *adreno_dev,
 	if (dispatch_q->inflight == 1)
 		dispatch_q->expires = jiffies +
 			msecs_to_jiffies(adreno_drawobj_timeout);
-
-	trace_adreno_cmdbatch_submitted(drawobj, (int) dispatcher->inflight,
-		time.ticks, (unsigned long) secs, nsecs / 1000, drawctxt->rb,
-		adreno_get_rptr(drawctxt->rb));
-
-	mutex_unlock(&device->mutex);
-
-	dispatch_q->cmd_q[dispatch_q->tail] = cmdobj;
-	dispatch_q->tail = (dispatch_q->tail + 1) %
-		ADRENO_DISPATCH_DRAWQUEUE_SIZE;
 
 	/*
 	 * If we believe ourselves to be current and preemption isn't a thing,
