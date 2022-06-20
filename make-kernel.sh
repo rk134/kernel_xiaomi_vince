@@ -180,8 +180,8 @@ function make_flashable() {
 dir
 rm -rf AnyKernel*
 git clone --depth=1 https://github.com/rk134/AnyKernel3.git AnyKernel3
+cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb AnyKernel3
 cd AnyKernel3
-cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/Image.gz-dtb
 zip -r9 AlphaKernel-[$VERSION].zip *
 ZIP=$(echo $(pwd)/*.zip)
 tg_pushzip
